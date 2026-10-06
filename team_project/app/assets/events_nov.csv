@@ -1,0 +1,7 @@
+zone,event_type,start_dt,end_dt,status
+Bole,concert,2025-11-05 19:00:00,2025-11-05 23:00:00,confirmed
+Kazanchis,football_match,2025-11-03 19:00:00,2025-11-03 21:00:00,confirmed
+Kazanchis,football_match,2025-11-02 15:00:00,2025-11-02 17:00:00,confirmed
+Kazanchis,sports_run,2025-11-09 06:00:00,2025-11-09 11:00:00,confirmed
+Megenagna,road_closure,2025-11-10 02:00:00,2025-11-10 22:00:00,confirmed
+Kazanchis,football_match,2025-11-03 19:00:00,2025-11-03 21:00:00,confirmed

@@ -1,0 +1,9 @@
+check,status,detail
+Exactly 12 unique zones in train,PASS,Found: 12
+Exactly 12 unique zones in test,PASS,Found: 12
+No negative trips in train,PASS,Negative count: 0
+Train row count unchanged from raw -> clean -> join,PASS,"Rows: 83,777"
+Train and test have same feature columns (excl trips),PASS,Matched: 30/30 features
+Train pickup_hour in expected range (Jan–Oct 2025),PASS,Min: 2025-01-01 00:00:00  Max: 2025-10-31 23:00:00
+Test pickup_hour in Nov 2025,PASS,Min: 2025-11-01 00:00:00  Max: 2025-11-14 23:00:00
+No NaN in zone_enc feature,PASS,NaN count: 0

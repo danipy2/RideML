@@ -1,0 +1,23 @@
+column,dtype,source,description
+zone,str,ride_demand_train,Canonical zone name (one of 12)
+pickup_hour,datetime,ride_demand_train,"Hour start, EAT"
+hour,int,engineered,Hour of day 0–23
+day_of_week,int,engineered,0=Mon 6=Sun
+is_weekend,int,engineered,1 if Sat or Sun
+month,int,engineered,Calendar month 1–12
+week_of_year,int,engineered,ISO week number
+day_of_month,int,engineered,Day of month 1–31
+is_payday,int,engineered,1 if day<=3 or day>=28
+temp_c,float,weather_hourly,Air temperature °C (EAT aligned)
+rain_mm,float,weather_hourly,Rain in previous hour mm
+humidity_pct,float,weather_hourly,Relative humidity %
+wind_kmh,float,weather_hourly,Wind speed km/h
+rain_class,int,engineered,0=none 1=light 2=mod 3=heavy
+rain_3h,float,engineered,Sum rain_mm over last 3 hours
+in_event_window,int,events_calendar,1 if inside confirmed event ±1h
+event_type_flag,str,events_calendar,"Type of event, or 'none'"
+hours_since_event_start,float,events_calendar,Hours since event started
+hours_until_event_end,float,events_calendar,Hours until event ends
+zone_enc,int,engineered,Label-encoded zone (0–11)
+zone_hour_mean,float,engineered,"Mean trips for this (zone,hour) in train"
+trips,float,ride_demand_train,TARGET: rides requested this zone-hour

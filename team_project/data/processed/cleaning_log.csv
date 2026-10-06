@@ -1,0 +1,17 @@
+file,column,issue,rows_affected,pct,fix,why
+ride_demand_train + test,zone,Inconsistent zone spellings,0,0.0,Mapped 55 spellings → 12 canonical zone names,Ensures consistent join keys across all three tables
+ride_demand_train,pickup_hour,3 different date/time formats,0,0.0,Parsed all 3 formats; converted ISO+offset to EAT tz-naive,All timestamps must share the same clock for correct joining
+ride_demand_train,trips,Negative trip counts (-1 sentinel/corrupt values),681,0.8,"Imputed with historical median (zone x day_of_week x hour, fallback zone x hour)",Trips cannot be negative; -1 represents database error sentinel (drivers & fares present). Historical median preserves natural demand patterns without introducing artificial daytime zero-spikes.
+ride_demand_train,trips,"Extreme outlier trips (> 190, 99.9th pct)",85,0.1,Capped at 190,Likely data errors; prevents model from fitting noise
+ride_demand_train,trips,Missing trip counts,845,0.99,Dropped rows with missing target (can't train without label),Cannot learn from unlabelled rows
+ride_demand_train,"zone, pickup_hour","Duplicate (zone, hour) combinations",838,0.99,Aggregated duplicates using rounded mean — no reading discarded,Keeping first arbitrarily ignores one reading. Round-mean uses all available data. Max spread between any two duplicate trip counts was only 3 trips.
+weather_hourly,timestamp,UTC timestamps need conversion to EAT (+3h); mixed formats,0,0.0,Converted UTC ISO-Z to EAT; parsed DD/MM/YYYY and added 3h,Must share same clock as ride table
+weather_hourly,timestamp,Duplicate timestamps with conflicting values,0,0.0,Kept 'observed' row when both exist; otherwise first row,Each hour must have exactly one weather reading
+weather_hourly,temp_c,"Temperature logged in Fahrenheit (> 50°C, 350 rows)",350,4.69,Converted Fahrenheit to Celsius using (temp - 32) * 5 / 9,Addis Ababa temps never exceed 30°C; converted values match typical July climate (14–24°C)
+weather_hourly,humidity_pct,"Missing humidity values (151 rows, isolated 1-2h gaps)",151,2.02,Forward pinned (ffill) from previous hour's observed humidity,Atmospheric humidity is continuous and highly autocorrelated; forward pinning preserves diurnal curve without artificial spikes
+weather_hourly,temp_c,Missing temperature values (42 rows),42,0.56,Forward pinned (ffill) from previous hour's observed temperature,Continuous time-series measurements preserve local diurnal temperature trend
+weather_hourly,rain_mm,Sentinel error code -9999 in rain_mm (76 rows),76,1.02,Replaced -9999 with NaN then forward-pinned from previous hour (ffill),Same sentinel pattern as -1 in trips. Rain is continuous; forward-pinning from the last valid reading preserves the local weather state better than injecting a global median.
+events_calendar,event_type,"Inconsistent casing and spacing (e.g. 'Football Match', 'CONCERT')",20,100.0,Lowercased and underscored; mapped to 8 canonical types,Consistent labels needed for feature engineering
+events_calendar,status,"Inconsistent casing (Confirmed, CONFIRMED, confirmed)",2,100.0,Lowercased all values,Need to filter for confirmed events only
+events_calendar,start_datetime / end_datetime,End time before start time,1,0.61,Swapped start and end for affected rows,Invalid intervals produce wrong event flags
+events_calendar,end_datetime,Missing end times,4,2.42,"Imputed end time using event category median duration (e.g. 2h match, 4h concert, 10h road closure)",Need valid interval for interval join; category median reflects actual typical duration of each event type
