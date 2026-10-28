@@ -2,7 +2,7 @@
 
 > **Qiyas AI Hackathon #2 · Addis Ababa University · IADE AI Training Program**
 
-A full end-to-end machine learning pipeline that forecasts ride-hailing demand for **12 zones across Addis Ababa**, hour-by-hour, for a 14-day future window (November 1–14, 2025). Built under hackathon time pressure from raw messy data to a deployed interactive demo.
+A full end-to-end machine learning pipeline that forecasts ride-hailing demand for **12 zones across Addis Ababa**, hour-by-hour, for a 14-day future window (November 1–14, 2025), spanning raw data cleaning, feature engineering, model evaluation, and an interactive demo.
 
 ---
 
@@ -237,4 +237,4 @@ team_project/
 
 ---
 
-*Built at the Qiyas AI Hackathon #2 — Addis Ababa, 2025*
+*Qiyas AI Hackathon #2 — Addis Ababa, 2025*
